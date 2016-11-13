@@ -3,7 +3,8 @@ HackEd Fall Hackathon 2016
 
 Using:
 Adafruit IO
-IFTTT
+IFTTT - replaced:
+Zapier
 
 Hardware:
 Feather Huzzah ESP8266
