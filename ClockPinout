@@ -34,3 +34,8 @@ positive dot pins:
 14 - middle colon
 15 - bottom right dot
 16 - top right dot
+
+Shift registers set up to match pin numbers
+SH_CP (clock) - pin 12
+DS    (data)  - pin 13
+ST_CP (send)  - pin 14
