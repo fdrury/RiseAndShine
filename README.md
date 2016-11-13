@@ -7,3 +7,7 @@ IFTTT
 
 Hardware:
 Feather Huzzah ESP8266
+
+Issues:
+Clock display intermittently turns off (due to hardware - no_fix)
+Clock can take a very long time (~5min) to update. Has to do with dropped packets?
