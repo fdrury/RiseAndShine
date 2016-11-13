@@ -12,4 +12,3 @@ Feather Huzzah ESP8266
 Issues:
 alarm is give-or-take 5 minutes.
 What if alarm packet is dropped??? Dropped packets are not handled. Error log but no recovery.
-Alarm can only go for a second. Why?
