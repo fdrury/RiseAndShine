@@ -61,6 +61,9 @@ Adafruit_MQTT_Subscribe theTime = Adafruit_MQTT_Subscribe(&mqtt, "time/seconds")
 
 /*************************** Sketch Code ************************************/
 
+//doesn't account for daylight savings
+int timeZone = -7;
+
 void setup() {
 
   Serial.begin(115200);
@@ -114,7 +117,10 @@ void loop() {
       Serial.print(F("Received: "));
       Serial.println(value);
 
-      // do stuff with value (on hardware)
+      // do stuff with value
+      Serial.print(atoi(value)/60/60%24+timeZone); //find hours
+      Serial.print(":");
+      Serial.println(atoi(value)/60%60); // find minutes
 
     }
 
