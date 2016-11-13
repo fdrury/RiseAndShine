@@ -16,16 +16,17 @@ int latchPin = 14; // STCP
 ShiftRegister74HC595 sr (numberOfShiftRegisters, serialDataPin, clockPin, latchPin);
 
 //digit shift register codes
-uint8_t digit_0 = B01011111;
-uint8_t digit_1 = B01000001;
-uint8_t digit_2 = B00111011;
-uint8_t digit_3 = B01110011;
-uint8_t digit_4 = B01100101;
-uint8_t digit_5 = B01110110;
-uint8_t digit_6 = B01111110;
-uint8_t digit_7 = B01000011;
-uint8_t digit_8 = B01111111;
-uint8_t digit_9 = B01110111;
+uint8_t digit_0  = B01011111;
+uint8_t digit_1  = B01000001;
+uint8_t digit_2  = B00111011;
+uint8_t digit_3  = B01110011;
+uint8_t digit_4  = B01100101;
+uint8_t digit_5  = B01110110;
+uint8_t digit_6  = B01111110;
+uint8_t digit_7  = B01000011;
+uint8_t digit_8  = B01111111;
+uint8_t digit_9  = B01110111;
+uint8_t no_digit = B00000000;
 
 //selector and dot register codes
 uint8_t first_digit  = B00011110;
@@ -44,7 +45,7 @@ void setup() {
   //pinMode(LATCH_PIN, OUTPUT);
 
   // set multiple pins at once when using two shift registers in series
-  uint8_t pinValues[] = { B11111111, B11000001 };
+  uint8_t pinValues[] = { no_digit, center_colon };
   sr.setAll(pinValues);
   
   Serial.println("Output Complete");
