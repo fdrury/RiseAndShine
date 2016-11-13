@@ -1,0 +1,36 @@
+7-segment pin-out
+
+entire display:
+  _________
+1|         |16
+ | 8.8:8 8:|
+8|_________|9
+
+
+each digit:
+  _a_
+f|_g_|b
+e|_d_|c
+
+Need to write one digit at a time and cycle through them.
+ground pin to enable digit:
+9  - all dots
+10 - 4th digit
+11 - 3rd digit
+12 - 2nd digit
+13 - 1st digit
+
+positive segment pins:
+1  - all b
+2  - all a
+3  - all f
+4  - all e
+5  - all d
+6  - all g
+7  - all c
+
+positive dot pins:
+8  - bottom left dot
+14 - middle colon
+15 - bottom right dot
+16 - top right dot
