@@ -30,6 +30,7 @@ void sendSwitchValue(int32_t value);
 #define BUZZER_0        15
 #define BUZZER_1        16
 #define LIGHT_PIN       4
+#define SWITCH_PIN      5
 
 /************************* WiFi Access Point *********************************/
 
@@ -100,6 +101,7 @@ int timeZone = -7;
 
 bool lightsOn = false;
 bool ignoreNext = false; //prevents Adafruit IO feedback loop
+bool switchState;
 
 void setup() {
 
@@ -123,6 +125,9 @@ void setup() {
   pinMode(BUZZER_0, OUTPUT);
   pinMode(BUZZER_1, OUTPUT);
   pinMode(LIGHT_PIN, OUTPUT);
+  pinMode(SWITCH_PIN, INPUT);
+
+  switchState = digitalRead(SWITCH_PIN);
 
   // Connect to WiFi access point.
   Serial.println(); Serial.println();
@@ -209,10 +214,30 @@ void loop() {
         Serial.println("ignored");
       }
     }
+    
+    Serial.print("STATE------");
+    Serial.println(switchState);
+    if(switchState != digitalRead(SWITCH_PIN)){
+      //toggle light (REMEMBER server part of this)
+      switchState = digitalRead(SWITCH_PIN);
+      lightsOn++;
+      digitalWrite(LIGHT_PIN, lightsOn);
+      sendSwitchValue(lightsOn);
+    }
 
     clockUpdate(currentHour, currentMinute);
   }
 
+  Serial.print("STATE------");
+  Serial.println(switchState);
+  if(switchState != digitalRead(SWITCH_PIN)){
+    //toggle light (REMEMBER server part of this)
+    switchState = digitalRead(SWITCH_PIN);
+    lightsOn++;
+    digitalWrite(LIGHT_PIN, lightsOn);
+    sendSwitchValue(lightsOn);
+  }
+  
   clockUpdate(currentHour, currentMinute);
 }
 
@@ -256,7 +281,7 @@ void clockUpdate(int theHour, int theMinute){
   while(millis()-startTime < 1000){ // hold on
     if(theHour/10 != 0){ // otherwise won't be shown
       sr.setAll(pinValues);
-      delay(1);
+      delay(clockDelay);
     }
     pinValues[0] = digitArray[theHour%10];
     pinValues[1] = second_digit;
@@ -290,18 +315,19 @@ void alarm(){
   sendSwitchValue(lightsOn);
 
   //ADD conditional (switch flicked)
-  while(millis() - startTime < 1000){ //crashes if too long
-    // put your main code here, to run repeatedly:
-    delayTime += 1;
-    if(delayTime > 300)
-      delayTime = 100;
-    
-    digitalWrite(BUZZER_0, HIGH);
-    digitalWrite(BUZZER_1, LOW);
-    delayMicroseconds(delayTime);
-    digitalWrite(BUZZER_0, LOW);
-    digitalWrite(BUZZER_1, HIGH);
-    delayMicroseconds(delayTime);
+  while(millis() - startTime < 100000){ //crashes if too long
+    for(int i = 0; i < 100; i++){
+      delayTime += 1;
+      if(delayTime > 300)
+        delayTime = 100;
+      digitalWrite(BUZZER_0, HIGH);
+      digitalWrite(BUZZER_1, LOW);
+      delayMicroseconds(delayTime);
+      digitalWrite(BUZZER_0, LOW);
+      digitalWrite(BUZZER_1, HIGH);
+      delayMicroseconds(delayTime);
+    }
+    delay(1); //required to give CPU time for other tasks
   }
 }
 
@@ -317,4 +343,3 @@ void sendSwitchValue(int32_t value){
     ignoreNext = true;
   }
 }
-
